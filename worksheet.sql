@@ -1,0 +1,75 @@
+create database TIMETRAVEL_DB
+create schema TIMETRAVEL_DATA
+create table EMPLOYEE(
+EMPLOYEE_ID STRING,
+
+FIRST_NAME STRING,
+
+LAST_NAME STRING,
+
+DEPARTMENT STRING,
+
+SALARY FLOAT,
+
+HIRE_DATE DATE
+)
+
+INSERT INTO TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE VALUES 
+
+('E1', 'John', 'Doe', 'Finance', 75000.50, '2020-01-15'), 
+
+('E2', 'Jane', 'Smith', 'HR', 68000.00, '2018-03-20'), 
+
+('E3', 'Alice', 'Johnson', 'IT', 92000.75, '2019-07-10'),
+
+ ('E4', 'Bob', 'Williams', 'Sales', 58000.25, '2021-06-01'), 
+
+('E5', 'Charlie', 'Brown', 'Marketing', 72000.00, '2022-04-22'), 
+
+('E6', 'Emily', 'Davis', 'IT', 89000.10, '2017-11-12'), 
+
+('E7', 'Frank', 'Miller', 'Finance', 83000.30, '2016-09-05'), 
+
+('E8', 'Grace', 'Taylor', 'Sales', 61000.45, '2023-02-11'),
+
+ ('E9', 'Hannah', 'Moore', 'HR', 67000.80, '2020-05-18'), 
+
+('E10', 'Jack', 'White', 'Marketing', 70000.90, '2019-12-25');
+
+
+select * from TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE 
+
+DELETE FROM TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE
+WHERE EMPLOYEE_ID IN ('E2','E7')
+
+
+select * from TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE  before (statement => '01bea154-0003-640c-0009-417a0004280a')
+
+SELECT *
+  FROM TIMETRAVEL_DB.INFORMATION_SCHEMA.TABLES where TABLE_NAME = 'EMPLOYEE'
+
+SHOW PARAMETERS IN DATABASE TIMETRAVEL_DB
+
+ALTER TABLE TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE
+SET DATA_RETENTION_TIME_IN_DAYS = 7;
+
+
+
+Insert into  TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE
+select * from(
+SELECT *
+FROM TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE
+    before (statement => '01bea154-0003-640c-0009-417a0004280a') -- or use TIMESTAMP just before deletion
+MINUS
+SELECT *
+FROM TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE);
+
+select * from TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE
+
+create or replace table timetravel_data.backup
+as select * from TIMETRAVEL_DB.TIMETRAVEL_DATA.EMPLOYEE
+    before (statement => '01bea154-0003-640c-0009-417a0004280a')
+
+select * from timetravel_data.backup
+
+
